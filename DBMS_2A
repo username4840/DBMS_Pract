@@ -1,0 +1,319 @@
+
+
+Aim:- Design atleast 10 queries for suitable databse application using SQL,DML,statements insert,select,update,delete with operator,function and set operator.
+
+Query:-
+nimbalkar@nimbalkar-Latitude-E6420:~$ mysql -u root -p Enter password:
+Welcome to the MySQL monitor. Commands end with ; or \g. Your MySQL connection id is 20
+Server version: 8.0.43-0ubuntu0.22.04.2 (Ubuntu) Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+Create:-
+mysql> create database DML; Query OK, 1 row affected (0.01 sec)
+mysql> use DML;
+Database changed
+
+mysql> create table liabrary(id int,name varchar(10),purpose varchar(20)); Query OK, 0 rows affected (0.06 sec)
+
+Insert:-
+mysql> insert into liabrary(id,name,purpose)values(1,'Gauri','books'),(2,'Pooja','internet'),(3,'Nilam','reading'),(4,'Utkar sha','book return');
+Query OK, 4 rows affected (0.01 sec) Records: 4 Duplicates: 0 Warnings: 0
+
+mysql> select*from liabrary;
++	+	+	+
+| id  | name	| purpose	|
++	+	+	+
+|	1 | Gauri	| books	|
+|	2 | Pooja	| internet	|
+ 
+|	3 | Nilam	| reading	|
+|	4 | Utkarsha | book return |
++	+	+	+
+4 rows in set (0.00 sec)
+
+Alter:-
+mysql> alter table liabrary add class varchar(20); Query OK, 0 rows affected (0.07 sec)
+Records: 0 Duplicates: 0 Warnings: 0
+
+Select:-
+mysql> select*from liabrary;
++	+	+	+	+
+| id  | name	| purpose	| class |
++	+	+	+	+
+|	1 | Gauri	| books	| NULL |
+|	2 | Pooja	| internet	| NULL |
+|	3 | Nilam	| reading	| NULL |
+|	4 | Utkarsha | book return | NULL |
++	+	+	+	+
+4 rows in set (0.00 sec)
+
+Update:-
+mysql> update liabrary set class='TE'where id=2; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> update liabrary set class='TE'where id=3; Query OK, 1 row affected (0.00 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> update liabrary set class='BE'where id=1; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> update liabrary set class='SE'where id=4; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+
+
+mysql> select*from liabrary;
++	+	+	+	+
+| id  | name	| purpose	| class |
++	+	+	+	+
+|	1 | Gauri	| books	| BE	|
+|	2 | Pooja	| internet	| TE	|
+|	3 | Nilam	| reading	| TE	|
+|	4 | Utkarsha | book return | SE	|
++	+	+	+	+
+ 
+4 rows in set (0.00 sec)
+
+
+WHERE:-
+mysql> select*from liabrary where id<4;
++	+	+	+	+
+| id  | name | purpose | class |
++	+	+	+	+
+|	1 | Gauri | books	| BE	|
+|	2 | Pooja | internet | TE	|
+|	3 | Nilam | reading | TE	|
++	+	+	+	+
+3 rows in set (0.00 sec)
+
+mysql> select*from liabrary where id in(1,3);
++	+	+	+	+
+| id  | name | purpose | class |
++	+	+	+	+
+|	1 | Gauri | books  | BE	|
+|	3 | Nilam | reading | TE	|
++	+	+	+	+
+2 rows in set (0.00 sec)
+
+
+DISTINCT:-
+mysql> select distinct(class)from liabrary;
++	+
+| class |
++	+
+| BE	|
+| TE	|
+| SE	|
++	+
+3 rows in set (0.01 sec)
+
+
+ORDER BY:-
+mysql> select*from liabrary order by name;
++	+	+	+	+
+| id  | name	| purpose	| class |
++	+	+	+	+
+|	1 | Gauri	| books	| BE	|
+|	3 | Nilam	| reading	| TE	|
+|	2 | Pooja	| internet	| TE	|
+|	4 | Utkarsha | book return | SE	|
++	+	+	+	+
+4 rows in set (0.00 sec)
+
+DELETE:-
+ 
+mysql> delete from liabrary where id=4; Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from liabrary;
++	+	+	+	+
+| id  | name | purpose | class |
++	+	+	+	+
+|	1 | Gauri | books	| BE	|
+|	2 | Pooja | internet | TE	|
+|	3 | Nilam | reading | TE	|
++	+	+	+	+
+3 rows in set (0.00 sec)
+
+mysql> alter table liabrary add bookname varchar(20); Query OK, 0 rows affected (0.05 sec)
+Records: 0 Duplicates: 0 Warnings: 0
+
+mysql> select*from liabrary;
++	+	+	+	+	+
+| id  | name | purpose | class | bookname |
++	+	+	+	+	+
+|	1 | Gauri | books	| BE	| NULL	|
+|	2 | Pooja | internet | TE	| NULL	|
+|	3 | Nilam | reading | TE	| NULL	|
++	+	+	+	+	+
+3 rows in set (0.00 sec)
+
+mysql> update liabrary set bookname='C++'where id=1; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> update liabrary set bookname='java'where id=1; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> update liabrary set bookname='java'where id=2; Query OK, 1 row affected (0.01 sec)
+Rows matched: 1 Changed: 1 Warnings: 0
+mysql> select*from liabrary;
++	+	+	+	+	+
+| id  | name | purpose | class | bookname |
++	+	+	+	+	+
+|	1 | Gauri | books	| BE	| java	|
+|	2 | Pooja | internet | TE	| java	|
+|	3 | Nilam | reading | TE	| NULL	|
++	+	+	+	+	+
+3 rows in set (0.00 sec)
+
+mysql> update liabrary set bookname='C++'where id=1; Query OK, 1 row affected (0.01 sec)
+ 
+Rows matched: 1 Changed: 1 Warnings: 0
+
+mysql> select*from liabrary;
++	+	+	+	+	+
+| id  | name | purpose | class | bookname |
++	+	+	+	+	+
+|	1 | Gauri | books	| BE	| C++	|
+|	2 | Pooja | internet | TE	| java	|
+|	3 | Nilam | reading | TE	| NULL	|
++	+	+	+	+	+
+3 rows in set (0.00 sec)
+
+mysql> insert into liabrary(id,name,purpose,class,bookname)values(4,'Ram','internet','FE','C'),(5,'Sham','bookreturn','T E','Python');
+Query OK, 2 rows affected (0.01 sec) Records: 2 Duplicates: 0 Warnings: 0
+
+mysql> select*from liabrary;
++	+	+	+	+	+
+| id  | name | purpose	| class | bookname |
++	+	+	+	+	+
+|	1 | Gauri | books	| BE	| C++	|
+|	2 | Pooja | internet  | TE	| java	|
+|	3 | Nilam | reading	| TE	| NULL	|
+|	4 | Ram  | internet  | FE	| C	|
+|	5 | Sham | bookreturn | TE	| Python  |
++	+	+	+	+	+
+5 rows in set (0.00 sec)
+
+IN BETWEEN :-
+mysql> select*from liabrary where id between 1 and 4;
++	+	+	+	+	+
+| id  | name | purpose | class | bookname |
++	+	+	+	+	+
+|	1 | Gauri | books	| BE	| C++	|
+|	2 | Pooja | internet | TE	| java	|
+|	3 | Nilam | reading | TE	| NULL	|
+|	4 | Ram  | internet | FE	| C	|
++	+	+	+	+	+
+4 rows in set (0.00 sec)
+mysql> select*from liabrary where id not between 1 and 4;
++	+	+	+	+	+
+| id  | name | purpose	| class | bookname |
++	+	+	+	+	+
+|	5 | Sham | bookreturn | TE	| Python  |
++	+	+	+	+	+
+1 row in set (0.00 sec)
+
+MIN:-
+ 
+mysql> select min(id)from liabrary;
++	+
+| min(id) |
++	+
+|	1 |
++	+
+1 row in set (0.00 sec)
+
+SUM:-
+mysql> select sum(id) from liabrary;
++	+
+| sum(id) |
++	+
+|	15 |
++	+
+1 row in set (0.00 sec)
+
+COUNT:-
+mysql> select count(bookname) from liabrary;
++	+
+| count(bookname) |
++	+
+|	4 |
++	+
+1 row in set (0.01 sec)
+
+CREATE:-
+mysql> create table collage(id int,name varchar(20),class varchar(10),division varchar(10)); Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into liabrary(id,name,purpose,class,bookname)values(6,'sita','self- learning','TE','TOC'),(7,'yashodha','reading','BE','shakespear');
+Query OK, 2 rows affected (0.01 sec) Records: 2 Duplicates: 0 Warnings: 0
+mysql> select*from liabrary;
++	+	+	+	+	+
+| id  | name	| purpose	| class | bookname  |
++	+	+	+	+	+
+|	1 | Gauri	| books	| BE	| C++	|
+|	2 | Pooja	| internet	| TE	| java	|
+|	3 | Nilam	| reading	| TE	| NULL	|
+|	4 | Ram	| internet	| FE	| C	|
+|	5 | Sham	| bookreturn	| TE	| Python	|
+|	6 | sita	| self-learning | TE	| TOC	|
+|	7 | yashodha | reading	| BE	| shakespear |
++	+	+	+	+	+
+7 rows in set (0.00 sec)
+ 
+mysql> delete from liabrary where id>4; Query OK, 3 rows affected (0.01 sec)
+
+mysql> insert into collage(id,name,class,division)values(5,'utkarsha','FE','A'),(6,'Rutuja','SE','A'),(7,'Shreya','BE','B'); Query OK, 3 rows affected (0.01 sec)
+Records: 3 Duplicates: 0 Warning:0
+
+
+
+mysql> select*from collage;
++	+	+	+	+
+| id  | name	| class | division |
++	+	+	+	+
+|	5 | utkarsha | FE	| A	|
+|	6 | Rutuja  | SE	| A	|
+|	7 | Shreya  | BE	| B	|
++	+	+	+	+
+3 rows in set (0.00 sec)
+
+UNION:-
+mysql> select class from collage union select class from liabrary;
++	+
+| class |
++	+
+| FE	|
+| SE	|
+| BE	|
+| TE	|
++	+
+4 rows in set (0.01 sec)
+
+mysql> select class from collage union all select class from liabrary;
++	+
+| class |
++	+
+| FE	|
+| SE	|
+| BE	|
+| BE	|
+| TE	|
+| TE	|
+| FE	|
++	+
+7 rows in set (0.01 sec)
+
+UNION ALL:-
+mysql> select name from collage union all select name from liabrary;
++	+
+ 
+| name	|
++	+
+| utkarsha |
+| Rutuja  |
+| Shreya  |
+| Gauri	|
+| Pooja	|
+| Nilam	|
+| Ram	|
++	+
+7 rows in set (0.00 sec)

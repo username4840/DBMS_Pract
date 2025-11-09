@@ -1,0 +1,106 @@
+                                                                                                Batch: A3 
+ ---------------------------------------------------------------------------------------------------------------- 
+ 
+ OUTPUT:  
+ 
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Sep 23 09:33:48 2025 
+ 
+Copyright (c) 1982, 2014, Oracle.  All rights reserved. 
+ 
+SQL> connect system 
+Enter password: 
+Connected. 
+SQL> create table studmarks(name VARCHAR2(10),total_marks NUMBER(5)); 
+ 
+Table created. 
+ 
+SQL> CREATE TABLE result(roll_no NUMBER(20),name VARCHAR2(20),class VARCHAR2(30)); 
+ 
+Table created. 
+ 
+SQL> CREATE or REPLACE procedure proc_grade(rno NUMBER, name VARCHAR2,marks NUMBER) 
+  2  IS 
+  3  class VARCHAR2(20); 
+  4  begin 
+  5  if(marks<=1500 and marks >= 900)then 
+  6  class:='Distinction'; 
+  7  elsif(marks <= 989 and marks >=900)then 
+  8  class:='First'; 
+  9  elsif(marks <= 899 and marks >= 825)then 
+ 10  class:= 'Higher second'; 
+ 11  end if; 
+ 12  insert into studmarks values(name,marks); 
+ 13  insert into result values(rno,name,class); 
+ 14  end; 
+ 15  / 
+ 
+Procedure created. 
+ 
+SQL> exec proc_grade(1,'charlie',1000); 
+ 
+PL/SQL procedure successfully completed. 
+ 
+SQL> select * from studmarks; 
+ 
+NAME       TOTAL_MARKS ---------- ----------- 
+charlie           1000 
+ 
+SQL> select * from result; 
+ 
+   ROLL_NO NAME                 CLASS ---------- -------------------- ------------------------------ 
+         1 charlie              Distinction 
+ 
+SQL> exec proc_grade(2,'Tonny',2000); 
+ 
+PL/SQL procedure successfully completed. 
+ 
+SQL> select * from studmarks; 
+ 
+NAME       TOTAL_MARKS 
+---------- ----------- 
+charlie           1000 
+Tonny             2000 
+ 
+SQL> select * from result; 
+ 
+   ROLL_NO NAME                 CLASS ---------- -------------------- ------------------------------ 
+         1 charlie              Distinction 
+         2 Tonny 
+ 
+SQL> exec proc_grade(2,'Tonny',800); 
+ 
+PL/SQL procedure successfully completed. 
+ 
+SQL> select * from studmarks; 
+ 
+NAME       TOTAL_MARKS ---------- ----------- 
+charlie           1000 
+Tonny             2000 
+Tonny              800 
+ 
+SQL> select * from result; 
+ 
+   ROLL_NO NAME                 CLASS ---------- -------------------- ------------------------------ 
+         1 charlie              Distinction 
+         2 Tonny 
+         2 Tonny 
+ 
+SQL> exec proc_grade(3,'Bob',970); 
+ 
+PL/SQL procedure successfully completed. 
+ 
+SQL> select * from studmarks; 
+ 
+NAME       TOTAL_MARKS ---------- ----------- 
+charlie           1000 
+Tonny             2000 
+Tonny              800 
+Bob                970 
+ 
+SQL> select * from result; 
+ 
+   ROLL_NO NAME                 CLASS ---------- -------------------- ------------------------------ 
+         1 charlie              Distinction 
+         2 Tonny               Higher second 
+         3 Bob                  First 
+SQL> 

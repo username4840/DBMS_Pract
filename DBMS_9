@@ -1,0 +1,246 @@
+ 
+
+ 
+(base) sspm@sspm:~$ sudo su 
+[sudo] password for sspm:  
+root@sspm:/home/sspm# mongo 
+MongoDB shell version v3.6.8 
+connecting to: mongodb://127.0.0.1:27017 
+Implicit session: session { "id" : UUID("f3ad69e6-7380-4a53-9b79-dda1f668ea7e") } 
+MongoDB server version: 3.6.8 
+Server has startup warnings:  
+2025-10-13T14:39:10.095+0530 I STORAGE  [initandlisten]  
+2025-10-13T14:39:10.095+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS 
+filesystem is strongly recommended with the WiredTiger storage engine 
+2025-10-13T14:39:10.095+0530 I STORAGE  [initandlisten] **          See 
+http://dochub.mongodb.org/core/prodnotes-filesystem 
+2025-10-13T14:39:13.082+0530 I CONTROL  [initandlisten]  
+2025-10-13T14:39:13.082+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not 
+enabled for the database. 
+2025-10-13T14:39:13.082+0530 I CONTROL  [initandlisten] **          Read and write access to 
+data and configuration is unrestricted. 
+2025-10-13T14:39:13.082+0530 I CONTROL  [initandlisten]  
+> use database 
+switched to db database 
+> db.createCollection("employee") 
+{ 
+ "ok" : 0, 
+ "errmsg" : "a collection 'database.employee' already exists", 
+ "code" : 48, 
+ "codeName" : "NamespaceExists" 
+} 
+> db.createCollection("employee1") 
+{ "ok" : 1 } 
+> db.employee.insert("emp_id":101,"name":"Sam","job":"HR","salary":100000) 
+2025-10-13T15:27:13.086+0530 E QUERY    [thread1] SyntaxError: missing ) after argument list 
+@(shell):1:27 
+> db.employee.insert(emp_id:101,name:"Sam",job:"HR",salary:100000) 
+2025-10-13T15:28:18.639+0530 E QUERY    [thread1] SyntaxError: missing ) after argument list 
+@(shell):1:25 
+> db.employee.insert({emp_id:101,name:"Sam",job:"HR",salary:100000}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.employee.insert({emp_id:102,name:"Jack",job:"Manager",salary:200000}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.employee.insert({emp_id:103,name:"Maxxy",job:"Developer",salary:300000}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.employee.insert({emp_id:104,name:"Arina",job:"Tester",salary:400000}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.employee.find().pretty() 
+{ 
+ "_id" : ObjectId("68ecc7223ed246d3b44085ab"), 
+ "emp_id" : 101, 
+ "name" : "Sam", 
+ "job" : "HR", 
+ "salary" : 10000 
+} 
+{ 
+ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), 
+ "emp_id" : 103, 
+ "name" : "William", 
+ "job" : "Developer", 
+ "salary" : 40000 
+} 
+{ 
+ "_id" : ObjectId("68ecc8b63ed246d3b44085af"), 
+ "emp_id" : 102, 
+ "name" : "Jack", 
+ "job" : "Manager", 
+ "salary" : 20000 
+} 
+{ 
+ "_id" : ObjectId("68ecc8dd3ed246d3b44085b0"), 
+ "emp_id" : 104, 
+ "name" : "Maxxy", 
+ "job" : "Clerk", 
+ "salary" : 30000 
+} 
+{ 
+ "_id" : ObjectId("68eccd5f0d3e216124184185"), 
+ "emp_id" : 101, 
+ "name" : "Sam", 
+ "job" : "HR", 
+ "salary" : 100000 
+} 
+{ 
+ "_id" : ObjectId("68eccd740d3e216124184186"), 
+ "emp_id" : 102, 
+ "name" : "Jack", 
+ "job" : "Manager", 
+ "salary" : 200000 
+} 
+{ 
+ "_id" : ObjectId("68eccd8c0d3e216124184187"), 
+ "emp_id" : 103, 
+ "name" : "Maxxy", 
+ "job" : "Developer", 
+ "salary" : 300000 
+} 
+{ 
+ "_id" : ObjectId("68eccdaf0d3e216124184188"), 
+ "emp_id" : 104, 
+ "name" : "Arina", 
+ "job" : "Tester", 
+ "salary" : 400000 
+} 
+> db.employee.remove({emp_id:104}) 
+WriteResult({ "nRemoved" : 2 }) 
+> db.employee.find().pretty() 
+{ 
+ "_id" : ObjectId("68ecc7223ed246d3b44085ab"), 
+ "emp_id" : 101, 
+ "name" : "Sam", 
+ "job" : "HR", 
+ "salary" : 10000 
+} 
+{ 
+ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), 
+ "emp_id" : 103, 
+ "name" : "William", 
+ "job" : "Developer", 
+ "salary" : 40000 
+} 
+{ 
+ "_id" : ObjectId("68ecc8b63ed246d3b44085af"), 
+ "emp_id" : 102, 
+ "name" : "Jack", 
+ "job" : "Manager", 
+ "salary" : 20000 
+} 
+{ 
+ "_id" : ObjectId("68eccd5f0d3e216124184185"), 
+ "emp_id" : 101, 
+ "name" : "Sam", 
+ "job" : "HR", 
+ "salary" : 100000 
+} 
+{ 
+ "_id" : ObjectId("68eccd740d3e216124184186"), 
+ "emp_id" : 102, 
+ "name" : "Jack", 
+ "job" : "Manager", 
+ "salary" : 200000 
+} 
+{ 
+ "_id" : ObjectId("68eccd8c0d3e216124184187"), 
+ "emp_id" : 103, 
+ "name" : "Maxxy", 
+ "job" : "Developer", 
+ "salary" : 300000 
+} 
+> db.employee.update({emp_id:102,name:"Jack"},{$set:{emp_id:102,name:"William"}}) 
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 }) 
+> db.employee.find().pretty() 
+{ 
+ "_id" : ObjectId("68ecc7223ed246d3b44085ab"), 
+ "emp_id" : 101, 
+ "name" : "Sam", 
+ "job" : "HR", 
+ "salary" : 10000 
+} 
+{ 
+ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), 
+ "emp_id" : 103, 
+ "name" : "William", 
+ "job" : "Developer", 
+ "salary" : 40000 
+} 
+{ 
+ "_id" : ObjectId("68ecc8b63ed246d3b44085af"), 
+ "emp_id" : 102, 
+ "name" : "William", 
+ "job" : "Manager", 
+ "salary" : 20000 
+} 
+{ 
+ "_id" : ObjectId("68eccd5f0d3e216124184185"), 
+ "emp_id" : 101, 
+ "name" : "Sam", 
+ "job" : "HR", 
+ "salary" : 100000 
+} 
+{ 
+ "_id" : ObjectId("68eccd740d3e216124184186"), 
+ "emp_id" : 102, 
+ "name" : "Jack", 
+ "job" : "Manager", 
+ "salary" : 200000 
+} 
+{ 
+ "_id" : ObjectId("68eccd8c0d3e216124184187"), 
+ "emp_id" : 103, 
+ "name" : "Maxxy", 
+ "job" : "Developer", 
+ "salary" : 300000 
+} 
+> db.employee.find({$or:[{emp_id:103},{name:"Maxxy"}]}) 
+{ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), "emp_id" : 103, "name" : "William", "job" : 
+"Developer", "salary" : 40000 } 
+{ "_id" : ObjectId("68eccd8c0d3e216124184187"), "emp_id" : 103, "name" : "Maxxy", "job" : 
+"Developer", "salary" : 300000 } 
+> db.employee.find({$or:[{emp_id:103},{name:"Maxxy"}]}).pretty 
+function () { 
+    this._prettyShell = true; 
+    return this; 
+} 
+> db.employee.find({$or:[{emp_id:103},{name:"Maxxy"}]}).pretty() 
+{ 
+ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), 
+ "emp_id" : 103, 
+ "name" : "William", 
+ "job" : "Developer", 
+ "salary" : 40000 
+} 
+{ 
+ "_id" : ObjectId("68eccd8c0d3e216124184187"), 
+ "emp_id" : 103, 
+ "name" : "Maxxy", 
+ "job" : "Developer", 
+ "salary" : 300000 
+} 
+> db.employee.find({$and:[{emp_id:103},{name:"Maxxy"}]}).pretty() 
+{ 
+ "_id" : ObjectId("68eccd8c0d3e216124184187"), 
+ "emp_id" : 103, 
+ "name" : "Maxxy", 
+ "job" : "Developer", 
+ "salary" : 300000 
+} 
+> db.employee.find({$and:[{emp_id:103},{name:"Jack"}]}).pretty() 
+> db.employee.sort(-1) 
+2025-10-13T15:40:56.279+0530 E QUERY    [thread1] TypeError: db.employee.sort is not a 
+function : 
+@(shell):1:1 
+> db.employee.find({},{emp_id:103,name:"Maxxy"}).sort({emp_id:-1}) 
+{ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), "emp_id" : 103, "name" : "William" } 
+{ "_id" : ObjectId("68eccd8c0d3e216124184187"), "emp_id" : 103, "name" : "Maxxy" } 
+{ "_id" : ObjectId("68ecc8b63ed246d3b44085af"), "emp_id" : 102, "name" : "William" } 
+{ "_id" : ObjectId("68eccd740d3e216124184186"), "emp_id" : 102, "name" : "Jack" } 
+{ "_id" : ObjectId("68ecc7223ed246d3b44085ab"), "emp_id" : 101, "name" : "Sam" } 
+{ "_id" : ObjectId("68eccd5f0d3e216124184185"), "emp_id" : 101, "name" : "Sam" } 
+> db.employee.find({},{emp_id:103,name:"Maxxy"}).sort({emp_id:1}) 
+{ "_id" : ObjectId("68ecc7223ed246d3b44085ab"), "emp_id" : 101, "name" : "Sam" } 
+{ "_id" : ObjectId("68eccd5f0d3e216124184185"), "emp_id" : 101, "name" : "Sam" } 
+{ "_id" : ObjectId("68ecc8b63ed246d3b44085af"), "emp_id" : 102, "name" : "William" } 
+{ "_id" : ObjectId("68eccd740d3e216124184186"), "emp_id" : 102, "name" : "Jack" } 
+{ "_id" : ObjectId("68ecc77d3ed246d3b44085ae"), "emp_id" : 103, "name" : "William" } 
+{ "_id" : ObjectId("68eccd8c0d3e216124184187"), "emp_id" : 103, "name" : "Maxxy" } 

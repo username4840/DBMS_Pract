@@ -1,0 +1,300 @@
+ 
+ 
+2(B) 
+base) sspm@sspm:~$ sudo su 
+[sudo] password for sspm:  
+root@sspm:/home/sspm# mysql -u root -p 
+Enter password:  
+Welcome to the MySQL monitor.  Commands end with ; or \g. 
+Your MySQL connection id is 8 
+Server version: 8.0.41-0ubuntu0.22.04.1 (Ubuntu) 
+ 
+Copyright (c) 2000, 2025, Oracle and/or its affiliates. 
+ 
+Oracle is a registered trademark of Oracle Corporation and/or its 
+affiliates. Other names may be trademarks of their respective 
+owners. 
+ 
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement. 
+ 
+mysql> create database school; 
+Query OK, 1 row affected (0.13 sec) 
+ 
+mysql> use school; 
+Database changed 
+mysql> create table library(id int(10),book_name varchar(50),author_name varchar(50),prize 
+int(10)); 
+Query OK, 0 rows affected, 2 warnings (0.57 sec) 
+ 
+mysql> create table library(id int(10),book_name varchar(50),author_name varchar(50),price 
+int(10)); 
+ERROR 1050 (42S01): Table 'library' already exists 
+mysql> create table library1(id int(10),book_name varchar(50),author_name varchar(50),price 
+int(10)); 
+Query OK, 0 rows affected, 2 warnings (0.42 sec) 
+ 
+mysql> insert into library1 values 
+    ->  
+    ->  
+    -> select * from library1; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near 'select * from library1' at line 4 
+mysql>  select * from library1; 
+Empty set (0.00 sec) 
+ 
+mysql> insert into library1 values(01,"OOPs","XYZ",330); 
+Query OK, 1 row affected (0.36 sec) 
+ 
+mysql> insert into library1 values(02,"DBMS","ABC",530); 
+Query OK, 1 row affected (0.06 sec) 
+ 
+mysql> insert into library1 values(03,"PPS","PQR",230); 
+Query OK, 1 row affected (0.06 sec) 
+ 
+mysql> insert into library1 values(04,"PPl","LMN",470); 
+Query OK, 1 row affected (0.05 sec) 
+ 
+mysql> select * from library1; 
++------+-----------+-------------+-------+ 
+| id   | book_name | author_name | price | 
++------+-----------+-------------+-------+ 
+|    1 | OOPs      | XYZ         |   330 | 
+|    2 | DBMS      | ABC         |   530 | 
+|    3 | PPS       | PQR         |   230 | 
+|    4 | PPl       | LMN         |   470 | 
++------+-----------+-------------+-------+ 
+4 rows in set (0.00 sec) 
+ 
+mysql> alter table library1 add class varchar(20); 
+Query OK, 0 rows affected (1.37 sec) 
+Records: 0  Duplicates: 0  Warnings: 0 
+ 
+mysql> select * from library1; 
++------+-----------+-------------+-------+-------+ 
+| id   | book_name | author_name | price | class | 
++------+-----------+-------------+-------+-------+ 
+|    1 | OOPs      | XYZ         |   330 | NULL  | 
+|    2 | DBMS      | ABC         |   530 | NULL  | 
+|    3 | PPS       | PQR         |   230 | NULL  | 
+|    4 | PPl       | LMN         |   470 | NULL  | 
++------+-----------+-------------+-------+-------+ 
+4 rows in set (0.00 sec) 
+ 
+mysql> update library1 set class=SE where id=01; 
+ERROR 1054 (42S22): Unknown column 'SE' in 'field list' 
+mysql> update library1 set class="SE" where id=01; 
+Query OK, 1 row affected (0.46 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update library1 set class="TE" where id=02; 
+Query OK, 1 row affected (0.05 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update library1 set class="FE" where id=03; 
+Query OK, 1 row affected (0.05 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update library1 set class="SE" where id=04; 
+Query OK, 1 row affected (0.08 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> select * from library1; 
++------+-----------+-------------+-------+-------+ 
+| id   | book_name | author_name | price | class | 
++------+-----------+-------------+-------+-------+ 
+|    1 | OOPs      | XYZ         |   330 | SE    | 
+|    2 | DBMS      | ABC         |   530 | TE    | 
+|    3 | PPS       | PQR         |   230 | FE    | 
+|    4 | PPl       | LMN         |   470 | SE    | 
++------+-----------+-------------+-------+-------+ 
+4 rows in set (0.00 sec) 
+ 
+mysql> select * from library1 where id=03; 
++------+-----------+-------------+-------+-------+ 
+| id   | book_name | author_name | price | class | 
++------+-----------+-------------+-------+-------+ 
+|    3 | PPS       | PQR         |   230 | FE    | 
++------+-----------+-------------+-------+-------+ 
+1 row in set (0.00 sec) 
+ 
+mysql> select * from library1 where id int(03,04); 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near 'int(03,04)' at line 1 
+mysql> select * from library1 where id in(1,2); 
++------+-----------+-------------+-------+-------+ 
+| id   | book_name | author_name | price | class | 
++------+-----------+-------------+-------+-------+ 
+|    1 | OOPs      | XYZ         |   330 | SE    | 
+|    2 | DBMS      | ABC         |   530 | TE    | 
++------+-----------+-------------+-------+-------+ 
+2 rows in set (0.00 sec) 
+ 
+mysql> select distinct(author_name) from library1; 
++-------------+ 
+| author_name | 
++-------------+ 
+| XYZ         | 
+| ABC         | 
+| PQR         | 
+| LMN         | 
++-------------+ 
+4 rows in set (0.02 sec) 
+ 
+mysql> select * from library1 order by author_name; 
++------+-----------+-------------+-------+-------+ 
+| id   | book_name | author_name | price | class | 
++------+-----------+-------------+-------+-------+ 
+|    2 | DBMS      | ABC         |   530 | TE    | 
+|    4 | PPl       | LMN         |   470 | SE    | 
+|    3 | PPS       | PQR         |   230 | FE    | 
+|    1 | OOPs      | XYZ         |   330 | SE    | 
++------+-----------+-------------+-------+-------+ 
+4 rows in set (0.00 sec) 
+ 
+mysql> delete from library1 id=04; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near '=04' at line 1 
+mysql> delete from library1 where id=04; 
+Query OK, 1 row affected (0.05 sec) 
+ 
+mysql> select * from library1; 
++------+-----------+-------------+-------+-------+ 
+| id   | book_name | author_name | price | class | 
++------+-----------+-------------+-------+-------+ 
+|    1 | OOPs      | XYZ         |   330 | SE    | 
+|    2 | DBMS      | ABC         |   530 | TE    | 
+|    3 | PPS       | PQR         |   230 | FE    | 
++------+-----------+-------------+-------+-------+ 
+3 rows in set (0.00 sec) 
+ 
+mysql> alter table library1 add(book_title varchar(40)); 
+Query OK, 0 rows affected (0.24 sec) 
+Records: 0  Duplicates: 0  Warnings: 0 
+ 
+mysql> select * from library1; 
++------+-----------+-------------+-------+-------+------------+ 
+| id   | book_name | author_name | price | class | book_title | 
++------+-----------+-------------+-------+-------+------------+ 
+|    1 | OOPs      | XYZ         |   330 | SE    | NULL       | 
+|    2 | DBMS      | ABC         |   530 | TE    | NULL       | 
+|    3 | PPS       | PQR         |   230 | FE    | NULL       | 
++------+-----------+-------------+-------+-------+------------+ 
+3 rows in set (0.00 sec) 
+ 
+mysql> update library1 set book_title='C++' where id=01; 
+Query OK, 1 row affected (0.05 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update library1 set book_title='SQL' where id=02; 
+Query OK, 1 row affected (0.05 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update library1 set book_title='Python' where id=03; 
+Query OK, 1 row affected (0.55 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> select * from library1; 
++------+-----------+-------------+-------+-------+------------+ 
+| id   | book_name | author_name | price | class | book_title | 
++------+-----------+-------------+-------+-------+------------+ 
+|    1 | OOPs      | XYZ         |   330 | SE    | C++        | 
+|    2 | DBMS      | ABC         |   530 | TE    | SQL        | 
+|    3 | PPS       | PQR         |   230 | FE    | Python     | 
++------+-----------+-------------+-------+-------+------------+ 
+3 rows in set (0.00 sec) 
+ 
+mysql> select * from library1 where id between 01 and 02; 
++------+-----------+-------------+-------+-------+------------+ 
+| id   | book_name | author_name | price | class | book_title | 
++------+-----------+-------------+-------+-------+------------+ 
+|    1 | OOPs      | XYZ         |   330 | SE    | C++        | 
+|    2 | DBMS      | ABC         |   530 | TE    | SQL        | 
++------+-----------+-------------+-------+-------+------------+ 
+2 rows in set (0.00 sec) 
+ 
+mysql> select * from library1 where id not between 01 and 02; 
++------+-----------+-------------+-------+-------+------------+ 
+| id   | book_name | author_name | price | class | book_title | 
++------+-----------+-------------+-------+-------+------------+ 
+|    3 | PPS       | PQR         |   230 | FE    | Python     | 
++------+-----------+-------------+-------+-------+------------+ 
+1 row in set (0.00 sec) 
+ 
+mysql> select min(id) from library1; 
++---------+ 
+| min(id) | 
++---------+ 
+|       1 | 
++---------+ 
+1 row in set (0.02 sec) 
+ 
+mysql> select sum(id) from library1; 
++---------+ 
+| sum(id) | 
++---------+ 
+|       6 | 
++---------+ 
+1 row in set (0.00 sec) 
+ 
+mysql> select count book_name; 
+ERROR 1054 (42S22): Unknown column 'count' in 'field list' 
+mysql> select count(book_name) from library1; 
++------------------+ 
+| count(book_name) | 
++------------------+ 
+|                3 | 
++------------------+ 
+1 row in set (0.00 sec) 
+ 
+mysql> create table college(id int(10),name varchar(30),class varchar(20)); 
+Query OK, 0 rows affected, 1 warning (0.45 sec) 
+ 
+mysql> select * from college; 
+Empty set (0.00 sec) 
+ 
+mysql> insert into college values(5,"sona","FE"); 
+Query OK, 1 row affected (0.06 sec) 
+ 
+mysql> insert into college values(6,"mona","SE"); 
+Query OK, 1 row affected (0.06 sec) 
+ 
+mysql> insert into college values(7,"tom","TE"); 
+Query OK, 1 row affected (0.05 sec) 
+ 
+mysql> select * from college; 
++------+------+-------+ 
+| id   | name | class | 
++------+------+-------+ 
+|    5 | sona | FE    | 
+|    6 | mona | SE    | 
+|    7 | tom  | TE    | 
++------+------+-------+ 
+3 rows in set (0.00 sec) 
+ 
+mysql> select class from college union select class from library1; 
++-------+ 
+| class | 
++-------+ 
+| FE    | 
+| SE    | 
+| TE    | 
++-------+ 
+3 rows in set (0.01 sec) 
+ 
+mysql> select class from college union all select class from library1; 
++-------+ 
+| class | 
++-------+ 
+| FE    | 
+| SE    | 
+| TE    | 
+| SE    | 
+| TE    | 
+| FE    | 
++-------+ 
+6 rows in set (0.00 sec) 
+ 
+mysql>  
+2(B) 
+ 
+ 

@@ -1,39 +1,60 @@
-# mongo_connect.py     *** 8th practical.***
-from pymongo import MongoClient
-
-# Step 1: Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
-print("✅ Connection Successful")
-
-# Step 2: Create / Access database
-db = client["library_db"]
-
-# Step 3: Create / Access collection
-collection = db["books"]
-
-# Step 4: Insert documents (Add)
-book1 = {"book_id": 1, "book_name": "DBMS Concepts", "author": "Korth"}
-book2 = {"book_id": 2, "book_name": "Let Us C", "author": "Yashwant Kanetkar"}
-collection.insert_many([book1, book2])
-print("✅ Records Inserted Successfully")
-
-# Step 5: Display all records
-print("\n📚 All Books in Database:")
-for book in collection.find():
-    print(book)
-
-# Step 6: Update record
-collection.update_one({"book_id": 1}, {"$set": {"author": "Silberschatz"}})
-print("\n✏️ Record Updated Successfully")
-
-# Step 7: Delete record
-collection.delete_one({"book_id": 2})
-print("\n🗑️ Record Deleted Successfully")
-
-# Step 8: Final display
-print("\n📘 Final Books Collection:")
-for book in collection.find():
-    print(book)
-
-client.close()
-print("\n🔒 Connection Closed")
+ Program (Python Code):  
+# mongo_connect.py 
+from pymongo import MongoClient 
+ 
+# Step 1: Connect to MongoDB 
+client = MongoClient("mongodb://localhost:27017/") 
+print(" Connec on Successful") 
+ 
+# Step 2: Create / Access database 
+db = client["library_db"] 
+ 
+# Step 3: Create / Access collec on 
+collec on = db["books"] 
+ 
+# Step 4: Insert documents (Add) 
+book1 = {"book_id": 1, "book_name": "DBMS Concepts", "author": "Korth"} 
+book2 = {"book_id": 2, "book_name": "Let Us C", "author": "Yashwant Kanetkar"} 
+collec on.insert_many([book1, book2]) 
+print(" Records Inserted Successfully") 
+ 
+# Step 5: Display all records 
+print("\n All Books in Database:") 
+for book in collec on.find(): 
+    print(book) 
+ 
+# Step 6: Update record 
+collec on.update_one({"book_id": 1}, {"$set": {"author": "Silberschatz"}}) 
+print("\n Record Updated Successfully") 
+ 
+# Step 7: Delete record 
+collec on.delete_one({"book_id": 2}) 
+print("\n Record Deleted Successfully") 
+ 
+# Step 8: Final display 
+print("\n Final Books Collec on:") 
+for book in collec on.find(): 
+    print(book) 
+ 
+client.close() 
+print("\n Connec on Closed") 
+ Output In Cmd : 
+C:\Users\Pavanraj> python mongo_connect.py 
+ Connec on Successful 
+ Records Inserted Successfully 
+ 
+ All Books in Database: 
+{'_id': ObjectId('671b45fa9a8a4f8d2e9f64a1'), 'book_id': 1, 'book_name': 'DBMS 
+Concepts', 'author': 'Korth'} 
+{'_id': ObjectId('671b45fa9a8a4f8d2e9f64a2'), 'book_id': 2, 'book_name': 'Let Us C', 
+'author': 'Yashwant Kanetkar'} 
+ 
+ Record Updated Successfully 
+ 
+ Record Deleted Successfully 
+ 
+ Final Books Collec on: 
+{'_id': ObjectId('671b45fa9a8a4f8d2e9f64a1'), 'book_id': 1, 'book_name': 'DBMS 
+Concepts', 'author': 'Silberschatz'} 
+ 
+ Connec on Closed 

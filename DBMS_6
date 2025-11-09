@@ -1,0 +1,80 @@
+
+ 
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Sep 23 09:55:34 2025 
+ 
+Copyright (c) 1982, 2014, Oracle.  All rights reserved. 
+ 
+SQL> connect system 
+Enter password: 
+Connected. 
+SQL> create table old_book(id number(5),name varchar2(20)); 
+ 
+Table created. 
+ 
+SQL> insert into old_book values('101','TOC'); 
+ 
+1 row created. 
+ 
+SQL> insert into old_book values('102','PPL'); 
+ 
+1 row created. 
+ 
+SQL> select * from old_book; 
+ 
+        ID NAME ---------- -------------------- 
+       101 TOC 
+       102 PPL 
+ 
+SQL> create table new_book(id number(4),name varchar(10)); 
+ 
+Table created. 
+ 
+SQL> insert into new_book values('103','M3'); 
+ 
+1 row created. 
+ 
+SQL> insert into new_book values('101','TOC'); 
+ 
+1 row created. 
+ 
+SQL> select * from new_book; 
+ 
+        ID NAME ---------- ---------- 
+       103 M3 
+       101 TOC 
+ 
+ 
+SQL> declare 
+  2  cursor cur1 is 
+  3  select id,name from old_book; 
+  4  cursor cur2 is 
+  5  select id from new_book; 
+  6  r number(5); 
+  7  i number(5); 
+  8  nm varchar2(20); 
+  9  begin 
+ 10  open cur1; 
+ 11  open cur2; 
+ 12  loop 
+ 13  fetch cur1 into i,nm; 
+ 14  fetch cur2 into r; 
+ 15  exit when cur1%found=false; 
+ 16  if r<>i then 
+ 17  insert into new_book values(i,nm); 
+ 18  end if; 
+ 19  end loop; 
+ 20  close cur1; 
+ 21  end; 
+ 22  / 
+ 
+PL/SQL procedure successfully completed. 
+ 
+SQL> select * from new_book; 
+ 
+        ID NAME ---------- ---------- 
+       103 M3 
+       101 TOC 
+       101 TOC 
+       102 PPL 
+ 
+SQL> 

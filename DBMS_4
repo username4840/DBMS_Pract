@@ -1,0 +1,120 @@
+                                                                                                              Batch: A3 
+ ----------------------------------------------------------------------------------------------------------------------- 
+ OUTPUT:  
+SQL> create table library(roll_no number(5),name varchar2(10),date_of_issue date,name_of_book 
+varchar2(10),status varchar2(10)); 
+create table library(roll_no number(5),name varchar2(10),date_of_issue date,name_of_book 
+varchar2(10),status varchar2(10)) 
+             * 
+ERROR at line 1: 
+ORA-00955: name is already used by an existing object 
+ 
+ 
+SQL> create table library1(roll_no number(5),name varchar2(10),date_of_issue date,name_of_book 
+varchar2(10),status varchar2(10)); 
+ 
+Table created. 
+ 
+SQL> insert into library1 values(1,'Pinku','22-sep-2025','java','returned'); 
+ 
+1 row created. 
+ 
+SQL> insert into library1 values(2,'Chinku','23-sep-2025','c++','noreturn'); 
+ 
+1 row created. 
+ 
+SQL> insert into library1 values(3,'Minku','24-sep-2025','ads','return'); 
+ 
+1 row created. 
+ 
+SQL> insert into library1 values(4,'Alisha','25-sep-2025','mp','noreturn'); 
+ 
+1 row created. 
+ 
+SQL> select * from library1; 
+ 
+   ROLL_NO NAME       DATE_OF_I NAME_OF_BO STATUS ---------- ---------- --------- ---------- ---------- 
+         1 Pinku      22-SEP-25 java       returned 
+         2 Chinku     23-SEP-25 c++        noreturn 
+         3 Minku      24-SEP-25 ads        return 
+         4 Alisha     25-SEP-25 mp         noreturn 
+ 
+SQL> create table fine2(roll_no number(10),date_of_return date,amount number(10)); 
+create table fine2(roll_no number(10),date_of_return date,amount number(10)) 
+             * 
+ERROR at line 1: 
+ORA-00955: name is already used by an existing object 
+ 
+ 
+SQL> create table fine3(roll_no number(10),date_of_return date,amount number(10)); 
+ 
+Table created. 
+ 
+SQL> insert into fine3 values(1,'25-8-25',50); 
+insert into fine3 values(1,'25-8-25',50) 
+                           * 
+ERROR at line 1: 
+ORA-01843: not a valid month 
+ 
+ 
+SQL> insert into fine3 values(1,'25-oct-25',50); 
+ 
+1 row created. 
+ 
+SQL> insert into fine3 values(1,'26-oct-25',70); 
+ 
+1 row created. 
+ 
+SQL> select * from fine3; 
+ 
+   ROLL_NO DATE_OF_R     AMOUNT ---------- --------- ---------- 
+         1 25-OCT-25         50 
+         1 26-OCT-25         70 
+ 
+SQL> declare 
+  2  rno number(3):=&roll_no; 
+  3  bname varchar2(10):='&name_of_book'; 
+  4  no_day number(10); 
+  5  issue_date date; 
+  6  fine3amt number(5):=0; 
+  7  begin 
+  8  select date_of_issue into issue_date from library1 where roll_no=rno; 
+  9  select sysdate-to_date(issue_date)days into no_day from dual; 
+ 10  if(no_day>=15 and no_day<=30)then 
+ 11  fine3amt:=no_day*5; 
+ 12  elsif no_day>30 then 
+ 13  fine3amt:=no_day*50; 
+ 14  end if; 
+ 15  update library1 set status='return' where roll_no=rno; 
+ 16  if fine3amt>0 then 
+ 17  insert into fine3 values(rno,sysdate,fine3amt); 
+ 18  end if; 
+ 19  EXCEPTION 
+ 20  WHEN no_data_found THEN 
+ 21  dbms_output.put_line('record not found'); 
+ 22  end; 
+ 23  / 
+Enter value for roll_no: 3 
+old   2: rno number(3):=&roll_no; 
+new   2: rno number(3):=3; 
+Enter value for name_of_book: ads 
+old   3: bname varchar2(10):='&name_of_book'; 
+new   3: bname varchar2(10):='ads'; 
+ 
+PL/SQL procedure successfully completed. 
+ 
+SQL> select *from fine3; 
+ 
+   ROLL_NO DATE_OF_R     AMOUNT ---------- --------- ---------- 
+         1 25-OCT-25         50 
+         1 26-OCT-25         70 
+ 
+SQL> select * from library1; 
+ 
+   ROLL_NO NAME       DATE_OF_I NAME_OF_BO STATUS ---------- ---------- --------- ---------- ---------- 
+         1 Pinku      22-SEP-25 java       returned 
+         2 Chinku     23-SEP-25 c++        noreturn 
+         3 Minku      24-SEP-25 ads        return 
+         4 Alisha     25-SEP-25 mp         noreturn 
+ 
+SQL> 

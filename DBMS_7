@@ -1,3 +1,123 @@
+//Create Tables
+-- Main library table
+CREATE TABLE library (
+    book_id NUMBER PRIMARY KEY,
+    book_name VARCHAR2(50),
+    author VARCHAR2(50)
+);
+
+-- Audit log table
+CREATE TABLE library_audit (
+    audit_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    book_id NUMBER,
+    action_type VARCHAR2(10),
+    old_book_name VARCHAR2(50),
+    old_author VARCHAR2(50),
+    action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+//Create Triggers
+Oracle trigger syntax is slightly different from MySQL.
+We use :OLD and :NEW prefixes inside triggers.
+-- Trigger after UPDATE
+CREATE OR REPLACE TRIGGER after_library_update
+AFTER UPDATE ON library
+FOR EACH ROW
+BEGIN
+    INSERT INTO library_audit (book_id, action_type, old_book_name, old_author)
+    VALUES (:OLD.book_id, 'UPDATE', :OLD.book_name, :OLD.author);
+END;
+/
+
+-- Trigger after DELETE
+CREATE OR REPLACE TRIGGER after_library_delete
+AFTER DELETE ON library
+FOR EACH ROW
+BEGIN
+    INSERT INTO library_audit (book_id, action_type, old_book_name, old_author)
+    VALUES (:OLD.book_id, 'DELETE', :OLD.book_name, :OLD.author);
+END;
+/
+
+
+
+//Insert Sample Records
+INSERT INTO library VALUES (1, 'DBMS Concepts', 'Korth');
+INSERT INTO library VALUES (2, 'Let Us C', 'Yashwant Kanetkar');
+COMMIT;
+
+
+//View Initial Data
+SELECT * FROM library;
+
+Expected:
+BOOK_ID  BOOK_NAME       AUTHOR
+-------  --------------- ------------------
+1        DBMS Concepts   Korth
+2        Let Us C        Yashwant Kanetkar
+
+
+
+
+// Perform Update and Delete Operations
+UPDATE library SET author = 'Silberschatz' WHERE book_id = 1;
+DELETE FROM library WHERE book_id = 2;
+COMMIT;
+
+
+
+//View Audit Records
+SELECT * FROM library_audit;
+
+
+//Expected output:
+AUDIT_ID  BOOK_ID  ACTION_TYPE  OLD_BOOK_NAME   OLD_AUTHOR         ACTION_TIME
+--------  --------  -----------  --------------  -----------------  --------------------------
+1         1         UPDATE       DBMS Concepts   Korth              25-OCT-25 00:20:45
+2         2         DELETE       Let Us C        Yashwant Kanetkar  25-OCT-25 00:20:55
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  OUT PUT: 
  
 1.Create the database and tables: 

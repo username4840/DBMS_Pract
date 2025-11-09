@@ -1,24 +1,31 @@
-(base) sspm@sspm:~$ sudo su 
-[sudo] password for sspm: 
-root@sspm:/home/sspm# mysql -u root -p 
-Enter password: 
-Welcome to the MySQL monitor.  Commands end with ; or \g. 
-Your MySQL connection id is 9 
-Server version: 8.0.40-0ubuntu0.20.04.1 (Ubuntu) 
- 
-Copyright (c) 2000, 2024, Oracle and/or its affiliates. 
- 
-Oracle is a registered trademark of Oracle Corporation and/or its 
-affiliates. Other names may be trademarks of their respective 
-owners. 
- 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement. 
- 
-mysql> CREATE DATABASE Student; 
-ERROR 1007 (HY000): Can't create database 'Student'; database exists 
-mysql> Drop Database Student; 
-Query OK, 0 rows affected (0.23 sec) 
- 
-mysql> Create Databse Student; 
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
-your MySQL server version for the right syntax to use near 'Databse Student' at line 1
+CREATE TABLE StudInfo(
+    roll_no NUMBER,
+    name VARCHAR2(20),
+    address VARCHAR2(50),
+    class VARCHAR2(20),
+    attendence NUMBER
+);
+
+INSERT INTO StudInfo VALUES (1, 'Mack', 'New York', 'T.E.', 50);
+INSERT INTO StudInfo VALUES (2, 'Jack', 'USA', 'T.E.', 40);
+INSERT INTO StudInfo VALUES (3, 'Arina', 'Egypt', 'T.E.', 80);
+INSERT INTO StudInfo VALUES (4, 'Maxxy', 'Thailand', 'T.E.', 60);
+INSERT INTO StudInfo VALUES (5, 'Wednesday', 'Europe', 'T.E.', 90);
+
+ALTER TABLE StudInfo ADD grade VARCHAR2(2);
+
+UPDATE StudInfo SET grade='A+' WHERE roll_no=5;
+
+CREATE VIEW data AS SELECT * FROM StudInfo;
+
+CREATE TABLE StudentInfo1 (
+    roll_no NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR2(10)
+);
+
+INSERT INTO StudentInfo1 (name) VALUES ('ABC');
+INSERT INTO StudentInfo1 (name) VALUES ('PQR');
+INSERT INTO StudentInfo1 (name) VALUES ('XYZ');
+INSERT INTO StudentInfo1 (name) VALUES ('MNO');
+
+SELECT * FROM StudentInfo1;

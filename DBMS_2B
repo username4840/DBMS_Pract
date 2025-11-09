@@ -1,5 +1,140 @@
- 
- 
+//Create Database
+CREATE DATABASE school;
+USE school;
+
+//Create Table – library1
+CREATE TABLE library1 (
+    id INT(10),
+    book_name VARCHAR(50),
+    author_name VARCHAR(50),
+    price INT(10)
+);
+
+//nsert Records
+INSERT INTO library1 VALUES (1, 'OOPs', 'XYZ', 330);
+INSERT INTO library1 VALUES (2, 'DBMS', 'ABC', 530);
+INSERT INTO library1 VALUES (3, 'PPS', 'PQR', 230);
+INSERT INTO library1 VALUES (4, 'PPL', 'LMN', 470);
+
+//Display All Records
+SELECT * FROM library1;
+
+//Alter Table – Add New Column
+ALTER TABLE library1 ADD class VARCHAR(20);
+
+//Update Class Column
+UPDATE library1 SET class = 'SE' WHERE id = 1;
+UPDATE library1 SET class = 'TE' WHERE id = 2;
+UPDATE library1 SET class = 'FE' WHERE id = 3;
+UPDATE library1 SET class = 'SE' WHERE id = 4;
+
+
+//Select Records with WHERE & IN
+SELECT * FROM library1 WHERE id = 3;
+
+SELECT * FROM library1 WHERE id IN (1, 2);
+
+//DISTINCT, ORDER BY
+SELECT DISTINCT(author_name) FROM library1;
+
+SELECT * FROM library1 ORDER BY author_name;
+
+
+//DELETE Record
+DELETE FROM library1 WHERE id = 4;
+
+
+//ALTER – Add Column book_title
+ALTER TABLE library1 ADD book_title VARCHAR(40);
+
+//Update New Column
+UPDATE library1 SET book_title = 'C++' WHERE id = 1;
+UPDATE library1 SET book_title = 'SQL' WHERE id = 2;
+UPDATE library1 SET book_title = 'Python' WHERE id = 3;
+
+
+//SELECT After Update
+SELECT * FROM library1;
+
+
+//BETWEEN & NOT BETWEEN
+SELECT * FROM library1 WHERE id BETWEEN 1 AND 2;
+
+SELECT * FROM library1 WHERE id NOT BETWEEN 1 AND 2;
+
+
+//Aggregate Functions
+SELECT MIN(id) AS Min_ID FROM library1;
+
+SELECT SUM(id) AS Total_ID FROM library1;
+
+SELECT COUNT(book_name) AS Book_Count FROM library1;
+
+
+
+//Create Another Table – college
+CREATE TABLE college (
+    id INT(10),
+    name VARCHAR(30),
+    class VARCHAR(20)
+);
+
+INSERT INTO college VALUES (5, 'Sona', 'FE');
+INSERT INTO college VALUES (6, 'Mona', 'SE');
+INSERT INTO college VALUES (7, 'Tom', 'TE');
+
+
+//Set Operators
+-- UNION removes duplicates
+SELECT class FROM college
+UNION
+SELECT class FROM library1;
+
+-- UNION ALL includes duplicates
+SELECT class FROM college
+UNION ALL
+SELECT class FROM library1;
+
+//Final Data Display
+SELECT * FROM library1;
+SELECT * FROM college;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2(B) 
 base) sspm@sspm:~$ sudo su 
 [sudo] password for sspm:  

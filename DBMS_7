@@ -1,0 +1,75 @@
+ OUT PUT: 
+ 
+1.Create the database and tables: 
+mysql> CREATE DATABASE library_db; 
+Query OK, 1 row affected (0.02 sec) 
+ 
+mysql> USE library_db; 
+Database changed 
+ 
+mysql> CREATE TABLE library ( 
+    -> book_id INT PRIMARY KEY, 
+    -> book_name VARCHAR(50), 
+    -> author VARCHAR(50) 
+    -> ); 
+Query OK, 0 rows affected (0.05 sec) 
+ 
+2.Create the audit table:  
+mysql> CREATE TABLE library_audit ( 
+    -> audit_id INT AUTO_INCREMENT PRIMARY KEY, 
+    -> book_id INT, 
+    -> ac on_type VARCHAR(10), 
+    -> old_book_name VARCHAR(50), 
+    -> old_author VARCHAR(50), 
+    -> ac on_me TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    -> ); 
+Query OK, 0 rows affected (0.04 sec) 
+ 
+3.Create triggers to log updates and dele ons: 
+mysql> DELIMITER $$ 
+ 
+mysql> CREATE TRIGGER a er_library_update 
+    -> AFTER UPDATE ON library 
+    -> FOR EACH ROW 
+    -> INSERT INTO library_audit (book_id, ac on_type, old_book_name, old_author) 
+    -> VALUES (OLD.book_id, 'UPDATE', OLD.book_name, OLD.author); 
+$$ 
+Query OK, 0 rows affected (0.03 sec) 
+ 
+mysql> CREATE TRIGGER a er_library_delete 
+    -> AFTER DELETE ON library 
+    -> FOR EACH ROW 
+    -> INSERT INTO library_audit (book_id, ac on_type, old_book_name, old_author) 
+    -> VALUES (OLD.book_id, 'DELETE', OLD.book_name, OLD.author); 
+$$ 
+Query OK, 0 rows affected (0.03 sec) 
+ 
+mysql> DELIMITER ; 
+ 
+4.Insert sample records : 
+mysql> INSERT INTO library VALUES (1, 'DBMS Concepts', 'Korth'), (2, 'Let Us C', 'Yashwant 
+Kanetkar'); 
+Query OK, 2 rows affected (0.01 sec) 
+ 
+mysql> SELECT * FROM library; 
++---------+---------------+--------------------+ 
+| book_id | book_name     | author             | 
++---------+---------------+--------------------+ 
+|       1 | DBMS Concepts | Korth              | 
+|       2 | Let Us C      | Yashwant Kanetkar  | 
++---------+---------------+--------------------+ 
+2 rows in set (0.00 sec) 
+5. Perform update and delete opera ons:   
+mysql> UPDATE library SET author = 'Silberschatz' WHERE book_id = 1; 
+Query OK, 1 row affected (0.01 sec) 
+mysql> DELETE FROM library WHERE book_id = 2; 
+Query OK, 1 row affected (0.01 sec) 
+6. Check audit table for logged records: 
+  mysql> SELECT * FROM library_audit; 
++----------+---------+-------------+---------------+--------------------+---------------------+ 
+| audit_id | book_id | ac on_type | old_book_name | old_author         | ac on_me         | 
++----------+---------+-------------+---------------+--------------------+---------------------+ 
+|        1 |       1 | UPDATE      | DBMS Concepts | Korth              | 2025-10-25 00:20:45 | 
+|        2 |       2 | DELETE      | Let Us C      | Yashwant Kanetkar  | 2025-10-25 00:20:55 | 
++----------+---------+-------------+---------------+--------------------+---------------------+ 
+2 rows in set (0.00 sec)

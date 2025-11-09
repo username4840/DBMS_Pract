@@ -1,0 +1,25 @@
+# mapreduce_example.py    *** 11th  practicl ***.
+
+from functools import reduce
+
+# Step 1: Input data
+text = "big data requires map reduce map reduce is powerful"
+
+# Step 2: Map Phase - split and assign count 1 to each word
+mapped = [(word, 1) for word in text.split()]
+print("🗺️ Mapped Data:")
+print(mapped)
+
+# Step 3: Shuffle Phase - group by words
+shuffle = {}
+for word, count in mapped:
+    shuffle.setdefault(word, []).append(count)
+
+print("\n🔄 Shuffled Data:")
+print(shuffle)
+
+# Step 4: Reduce Phase - sum up counts for each word
+reduced = {word: reduce(lambda a, b: a + b, counts) for word, counts in shuffle.items()}
+
+print("\n🧮 Reduced Data (Final Word Count):")
+print(reduced)

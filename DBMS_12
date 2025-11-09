@@ -1,0 +1,56 @@
+# *** 12th Practical ***.
+import mysql.connector
+
+# Step 1: Establish connection
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="your_password",   # replace with your MySQL password
+    database="student_db"
+)
+print("✅ Database Connection Successful!")
+
+# Step 2: Create a cursor
+cur = mydb.cursor()
+
+# Step 3: Create table
+cur.execute("""
+CREATE TABLE IF NOT EXISTS student(
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    course VARCHAR(50)
+)
+""")
+print("✅ Table Created Successfully!")
+
+# Step 4: Insert record (Add)
+cur.execute("INSERT INTO student VALUES (1, 'Tushar', 'Computer Engineering')")
+cur.execute("INSERT INTO student VALUES (2, 'Mayur', 'IT')")
+mydb.commit()
+print("✅ Records Added Successfully!")
+
+# Step 5: Display records
+print("\n📋 Current Student Records:")
+cur.execute("SELECT * FROM student")
+for row in cur.fetchall():
+    print(row)
+
+# Step 6: Update record (Edit)
+cur.execute("UPDATE student SET course='AI & DS' WHERE id=1")
+mydb.commit()
+print("\n✏️ Record Updated Successfully!")
+
+# Step 7: Delete record
+cur.execute("DELETE FROM student WHERE id=2")
+mydb.commit()
+print("🗑️ Record Deleted Successfully!")
+
+# Step 8: Final display
+print("\n📘 Final Student Records:")
+cur.execute("SELECT * FROM student")
+for row in cur.fetchall():
+    print(row)
+
+# Step 9: Close connection
+mydb.close()
+print("\n🔒 Connection Closed Successfully!")

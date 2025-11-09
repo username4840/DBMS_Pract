@@ -1,0 +1,401 @@
+ 
+
+ 
+sspm@sspm:~$ sudo su 
+[sudo] password for sspm:  
+root@sspm:/home/sspm# mongo 
+MongoDB shell version v3.6.8 
+connecting to: mongodb://127.0.0.1:27017 
+Implicit session: session { "id" : UUID("1f95435b-ac9a-4817-84ac-de21821c015c") } 
+MongoDB server version: 3.6.8 
+Server has startup warnings:  
+2025-10-15T09:57:56.388+0530 I STORAGE  [initandlisten]  
+2025-10-15T09:57:56.388+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS 
+filesystem is strongly recommended with the WiredTiger storage engine 
+2025-10-15T09:57:56.388+0530 I STORAGE  [initandlisten] **          See 
+http://dochub.mongodb.org/core/prodnotes-filesystem 
+2025-10-15T09:57:59.297+0530 I CONTROL  [initandlisten]  
+2025-10-15T09:57:59.297+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not 
+enabled for the database. 
+2025-10-15T09:57:59.297+0530 I CONTROL  [initandlisten] **          Read and write access to 
+data and configuration is unrestricted. 
+2025-10-15T09:57:59.297+0530 I CONTROL  [initandlisten]  
+ 
+> use ass10 
+switched to db ass10 
+ 
+> db.createCollection("tutorial1") 
+{ "ok" : 1 } 
+ 
+ 
+> db.tutorial1.insert({title:"mongodb overview",description:"mongodb is nosql 
+database",byUser:"tutorialpoint",url:"http://www.tuto.com",likes:"100"}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.tutorial1.insert({title:"NoSQL overview",description:"NoSQL is very 
+fast",byUser:"tutorialpoint",url:"http://www.tutorialpoint.com",likes:"100"}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.tutorial1.insert({title:"Neo4j overview",description:"Neo4j is SQL 
+database",byUser:"Neo4j",url:"http://www.neo4j.com",likes:"130"}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.tutorial1.insert({title:"FB overview",description:"FB is SQL 
+database",byUser:"FB",url:"http://www.facebook.com",likes:"60"}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.tutorial1.find().pretty() 
+{ 
+ "_id" : ObjectId("68ef26551eb5787a798c944b"), 
+ "title" : "mongodb overview", 
+ "description" : "mongodb is nosql database", 
+ "byUser" : "tutorialpoint", 
+ "url" : "http://www.tuto.com", 
+ "likes" : "100" 
+} 
+{ 
+ "_id" : ObjectId("68ef26bc1eb5787a798c944c"), 
+ "title" : "NoSQL overview", 
+ "description" : "NoSQL is very fast", 
+ "byUser" : "tutorialpoint", 
+ "url" : "http://www.tutorialpoint.com", 
+ "likes" : "100" 
+} 
+{ 
+ "_id" : ObjectId("68ef27251eb5787a798c944d"), 
+ "title" : "Neo4j overview", 
+ "description" : "Neo4j is SQL database", 
+ "byUser" : "Neo4j", 
+ "url" : "http://www.neo4j.com", 
+ "likes" : "130" 
+} 
+{ 
+ "_id" : ObjectId("68ef275d1eb5787a798c944e"), 
+ "title" : "FB overview", 
+ "description" : "FB is SQL database", 
+ "byUser" : "FB", 
+ "url" : "http://www.facebook.com", 
+ "likes" : "60" 
+} 
+ 
+ 
+> db.tutorial1.aggregate([{$group:{_id:"$byUser",numTutorial:{$sum:1}}}]) 
+{ "_id" : "FB", "numTutorial" : 1 } 
+{ "_id" : "Neo4j", "numTutorial" : 1 } 
+{ "_id" : "tutorialpoint", "numTutorial" : 2 } 
+ 
+ 
+> db.createCollection("sales") 
+{ "ok" : 1 } 
+ 
+ 
+> db.sales.insert({_id:1,item:"laptop",price:20000,quantity:7}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.sales.insert({_id:2,item:"mouse",price:30000,quantity:6}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.sales.insert({_id:3,item:"laptop",price:40000,quantity:8}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.sales.insert({_id:4,item:"keyboard",price:50000,quantity:3}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+> db.sales.insert({_id:5,item:"mouse",price:60000,quantity:9}) 
+WriteResult({ "nInserted" : 1 }) 
+ 
+ 
+> db.sales.find().pretty() 
+{ "_id" : 1, "item" : "laptop", "price" : 20000, "quantity" : 7 } 
+{ "_id" : 2, "item" : "mouse", "price" : 30000, "quantity" : 6 } 
+{ "_id" : 3, "item" : "laptop", "price" : 40000, "quantity" : 8 } 
+{ "_id" : 4, "item" : "keyboard", "price" : 50000, "quantity" : 3 } 
+{ "_id" : 5, "item" : "mouse", "price" : 60000, "quantity" : 9 } 
+ 
+ 
+> db.sales.aggregate([{$group:{_id:"$item",total:{$sum:1}}}]) 
+{ "_id" : "keyboard", "total" : 1 } 
+{ "_id" : "mouse", "total" : 2 } 
+{ "_id" : "laptop", "total" : 2 } 
+ 
+> db.sales.aggregate([{$group:{_id:"$item",minQuantity:{$min:"$quantity"}}}]) 
+{ "_id" : "keyboard", "minQuantity" : 3 } 
+{ "_id" : "mouse", "minQuantity" : 6 } 
+{ "_id" : "laptop", "minQuantity" : 7 } 
+ 
+> 
+db.sales.aggregate([{$group:{_id:"$item",maxTotalAmount:{$max:{$multiply:["$price","$quantity
+ "]}},maxQuantity:{$max:"$quantity"}}}]) 
+{ "_id" : "keyboard", "maxTotalAmount" : 150000, "maxQuantity" : 3 } 
+{ "_id" : "mouse", "maxTotalAmount" : 540000, "maxQuantity" : 9 } 
+{ "_id" : "laptop", "maxTotalAmount" : 320000, "maxQuantity" : 8 } 
+ 
+> db.sales.aggregate([{$group:{_id:"$item",avgQuantity:{$avg:"$quantity"}}}]) 
+{ "_id" : "keyboard", "avgQuantity" : 3 } 
+{ "_id" : "mouse", "avgQuantity" : 7.5 } 
+{ "_id" : "laptop", "avgQuantity" : 7.5 } 
+ 
+> db.sales.aggregate([{$group:{_id:"$item",LastQuantity:{$last:"$quantity"}}}]) 
+{ "_id" : "keyboard", "LastQuantity" : 3 } 
+{ "_id" : "mouse", "LastQuantity" : 9 } 
+{ "_id" : "laptop", "LastQuantity" : 8 } 
+ 
+> db.sales.aggregate([{$group:{_id:"$item",pushQuantity:{$push:"$quantity"}}}]) 
+{ "_id" : "keyboard", "pushQuantity" : [ 3 ] } 
+{ "_id" : "mouse", "pushQuantity" : [ 6, 9 ] } 
+{ "_id" : "laptop", "pushQuantity" : [ 7, 8 ] } 
+ 
+ 
+> db.sales.aggregate([{$sort:{_id:1}},{$group:{_id:"$item",total:{$sum:1}}}]) 
+{ "_id" : "keyboard", "total" : 1 } 
+{ "_id" : "mouse", "total" : 2 } 
+{ "_id" : "laptop", "total" : 2 } 
+ 
+> db.sales.aggregate([{$sort:{_id:1}},{$group:{_id:"$item",minQuantity:{$min:"$quantity"}}}]) 
+{ "_id" : "keyboard", "minQuantity" : 3 } 
+{ "_id" : "mouse", "minQuantity" : 6 } 
+{ "_id" : "laptop", "minQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$sort:{_id:1}},{$group:{_id:"$item",avgQuantity:{$avg:"$quantity"}}}]) 
+{ "_id" : "keyboard", "avgQuantity" : 3 } 
+{ "_id" : "mouse", "avgQuantity" : 7.5 } 
+{ "_id" : "laptop", "avgQuantity" : 7.5 } 
+ 
+> db.sales.aggregate([{$sort:{_id:1}},{$group:{_id:"$item",firstQuantity:{$first:"$quantity"}}}]) 
+{ "_id" : "keyboard", "firstQuantity" : 3 } 
+{ "_id" : "mouse", "firstQuantity" : 6 } 
+{ "_id" : "laptop", "firstQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$sort:{_id:1}},{$group:{_id:"$item",lastQuantity:{$last:"$quantity"}}}]) 
+{ "_id" : "keyboard", "lastQuantity" : 3 } 
+{ "_id" : "mouse", "lastQuantity" : 9 } 
+{ "_id" : "laptop", "lastQuantity" : 8 } 
+ 
+> db.sales.aggregate([{$sort:{_id:1}},{$group:{_id:"$item",pushQuantity:{$push:"$quantity"}}}]) 
+{ "_id" : "keyboard", "pushQuantity" : [ 3 ] } 
+{ "_id" : "mouse", "pushQuantity" : [ 6, 9 ] } 
+{ "_id" : "laptop", "pushQuantity" : [ 7, 8 ] } 
+ 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",totalQuantity:{$sum:"$quantity"}}}]) 
+{ "_id" : "keyboard", "totalQuantity" : 3 } 
+{ "_id" : "laptop", "totalQuantity" : 8 } 
+{ "_id" : "mouse", "totalQuantity" : 15 } 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",minQuantity:{$min:"$quantity"}}}]) 
+{ "_id" : "keyboard", "minQuantity" : 3 } 
+{ "_id" : "laptop", "minQuantity" : 8 } 
+{ "_id" : "mouse", "minQuantity" : 6 } 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",maxQuantity:{$max:"$quantity"}}}]) 
+{ "_id" : "keyboard", "maxQuantity" : 3 } 
+{ "_id" : "laptop", "maxQuantity" : 8 } 
+{ "_id" : "mouse", "maxQuantity" : 9 } 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",firstQuantity:{$first:"$quantity"}}}]) 
+{ "_id" : "keyboard", "firstQuantity" : 3 } 
+{ "_id" : "laptop", "firstQuantity" : 8 } 
+{ "_id" : "mouse", "firstQuantity" : 6 } 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",lastQuantity:{$last:"$quantity"}}}]) 
+{ "_id" : "keyboard", "lastQuantity" : 3 } 
+{ "_id" : "laptop", "lastQuantity" : 8 } 
+{ "_id" : "mouse", "lastQuantity" : 9 } 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",avgQuantity:{$avg:"$quantity"}}}]) 
+{ "_id" : "keyboard", "avgQuantity" : 3 } 
+{ "_id" : "laptop", "avgQuantity" : 8 } 
+{ "_id" : "mouse", "avgQuantity" : 7.5 } 
+ 
+> db.sales.aggregate([{$skip:2},{$group:{_id:"$item",avgQuantity:{$avg:"$quantity"}}}]) 
+{ "_id" : "mouse", "avgQuantity" : 9 } 
+{ "_id" : "keyboard", "avgQuantity" : 3 } 
+{ "_id" : "laptop", "avgQuantity" : 8 } 
+ 
+>  db.sales.aggregate([{$skip:3},{$group:{_id:"$item",avgQuantity:{$avg:"$quantity"}}}]) 
+{ "_id" : "mouse", "avgQuantity" : 9 } 
+{ "_id" : "keyboard", "avgQuantity" : 3 } 
+ 
+> db.sales.aggregate([{$skip:1},{$group:{_id:"$item",pushQuantity:{$push:"$quantity"}}}]) 
+{ "_id" : "keyboard", "pushQuantity" : [ 3 ] } 
+{ "_id" : "laptop", "pushQuantity" : [ 8 ] } 
+{ "_id" : "mouse", "pushQuantity" : [ 6, 9 ] } 
+ 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",totalQuantity:{$sum:"$quantity"}}}]) 
+{ "_id" : "mouse", "totalQuantity" : 6 } 
+{ "_id" : "laptop", "totalQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",maxQuantity:{$max:"$quantity"}}}]) 
+{ "_id" : "mouse", "maxQuantity" : 6 } 
+{ "_id" : "laptop", "maxQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",minQuantity:{$min:"$quantity"}}}]) 
+{ "_id" : "mouse", "minQuantity" : 6 } 
+{ "_id" : "laptop", "minQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",avgQuantity:{$avg:"$quantity"}}}]) 
+{ "_id" : "mouse", "avgQuantity" : 6 } 
+{ "_id" : "laptop", "avgQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",firstQuantity:{$first:"$quantity"}}}]) 
+{ "_id" : "mouse", "firstQuantity" : 6 } 
+{ "_id" : "laptop", "firstQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:1},{$group:{_id:"$item",firstQuantity:{$first:"$quantity"}}}]) 
+{ "_id" : "laptop", "firstQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",lastQuantity:{$last:"$quantity"}}}]) 
+{ "_id" : "mouse", "lastQuantity" : 6 } 
+{ "_id" : "laptop", "lastQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:1},{$group:{_id:"$item",lastQuantity:{$last:"$quantity"}}}]) 
+{ "_id" : "laptop", "lastQuantity" : 7 } 
+ 
+> db.sales.aggregate([{$limit:2},{$group:{_id:"$item",pushQuantity:{$push:"$quantity"}}}]) 
+{ "_id" : "mouse", "pushQuantity" : [ 6 ] } 
+{ "_id" : "laptop", "pushQuantity" : [ 7 ] } 
+ 
+ 
+> db.sales.ensureIndex({item:1}) 
+{ 
+ "createdCollectionAutomatically" : false, 
+ "numIndexesBefore" : 1, 
+ "numIndexesAfter" : 2, 
+ "ok" : 1 
+} 
+ 
+> db.sales.getIndexes() 
+[ 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "_id" : 1 
+  }, 
+  "name" : "_id_", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1 
+  }, 
+  "name" : "item_1", 
+  "ns" : "ass10.sales" 
+ } 
+] 
+ 
+> db.sales.ensureIndex({item:1,price:-1}) 
+{ 
+ "createdCollectionAutomatically" : false, 
+ "numIndexesBefore" : 2, 
+ "numIndexesAfter" : 3, 
+ "ok" : 1 
+} 
+ 
+> db.sales.getIndexes() 
+[ 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "_id" : 1 
+  }, 
+  "name" : "_id_", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1 
+  }, 
+  "name" : "item_1", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1, 
+   "price" : -1 
+  }, 
+  "name" : "item_1_price_-1", 
+  "ns" : "ass10.sales" 
+ } 
+] 
+ 
+> db.sales.ensureIndex({item:1,price:1}) 
+{ 
+ "createdCollectionAutomatically" : false, 
+ "numIndexesBefore" : 3, 
+ "numIndexesAfter" : 4, 
+ "ok" : 1 
+} 
+ 
+> db.sales.getIndexes() 
+[ 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "_id" : 1 
+  }, 
+  "name" : "_id_", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1 
+  }, 
+  "name" : "item_1", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1, 
+   "price" : -1 
+  }, 
+  "name" : "item_1_price_-1", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1, 
+   "price" : 1 
+  }, 
+  "name" : "item_1_price_1", 
+  "ns" : "ass10.sales" 
+ } 
+] 
+ 
+> db.sales.dropIndex({item:1,price:1}) 
+{ "nIndexesWas" : 4, "ok" : 1 } 
+ 
+> db.sales.getIndexes() 
+[ 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "_id" : 1 
+  }, 
+  "name" : "_id_", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1 
+  }, 
+  "name" : "item_1", 
+  "ns" : "ass10.sales" 
+ }, 
+ { 
+  "v" : 2, 
+  "key" : { 
+   "item" : 1, 
+   "price" : -1 
+  }, 
+  "name" : "item_1_price_-1", 
+  "ns" : "ass10.sales" 
+ } 
+] 

@@ -52,3 +52,317 @@ COMMIT;
 -- Display final data
 SELECT * FROM StudInfo;
 SELECT * FROM StudentInfo1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ OUT PUT: 
+ 
+(base) sspm@sspm:~$ sudo su 
+[sudo] password for sspm: 
+root@sspm:/home/sspm# mysql -u root -p 
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g. 
+Your MySQL connection id is 9 
+Server version: 8.0.40-0ubuntu0.20.04.1 (Ubuntu) 
+ 
+Copyright (c) 2000, 2024, Oracle and/or its affiliates. 
+ 
+Oracle is a registered trademark of Oracle Corporation and/or its 
+affiliates. Other names may be trademarks of their respective 
+owners. 
+ 
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement. 
+ 
+mysql> CREATE DATABASE Student; 
+ERROR 1007 (HY000): Can't create database 'Student'; database exists 
+mysql> Drop Database Student; 
+Query OK, 0 rows affected (0.23 sec) 
+ 
+mysql> Create Databse Student; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near 'Databse Student' at line 1 
+mysql> Create Database student; 
+ERROR 1007 (HY000): Can't create database 'student'; database exists 
+mysql> create database student1; 
+Query OK, 1 row affected (0.13 sec) 
+ 
+mysql> use student1; 
+Database changed 
+mysql> create table StudInfo(roll_no INT(10),name VARCHAR(20),address VARCHAR(50),class 
+VARCHAR(20),attendence INT(100)); 
+Query OK, 0 rows affected, 2 warnings (0.52 sec) 
+ 
+mysql> SELECT*FROM StudInfo; 
+Empty set (0.01 sec) 
+ 
+mysql> Insert Into StudInfo(roll_no,name,address,class,attendence) Values(1,"Mack","New 
+York","T.E.",50); 
+Query OK, 1 row affected (0.15 sec) 
+ 
+mysql> Insert Into StudInfo(roll_no,name,address,class,attendence) 
+Values(2,"Jack","USA","T.E.",40); 
+Query OK, 1 row affected (0.08 sec) 
+ 
+mysql> Insert Into StudInfo(roll_no,name,address,class,attendence) 
+Values(3,"Arina","Egypt","T.E.",80); 
+Query OK, 1 row affected (0.14 sec) 
+ 
+mysql> Insert Into StudInfo(roll_no,name,address,class,attendence) 
+Values(4,"Maxxy","Thailand","T.E.",60); 
+Query OK, 1 row affected (0.10 sec) 
+ 
+mysql> Insert Into StudInfo(roll_no,name,address,class,attendence) 
+Values(5,"Wednesday","Europe","T.E.",90); 
+Query OK, 1 row affected (0.08 sec) 
+ 
+mysql> Select*From StudInfo; 
++---------+-----------+----------+-------+------------+ 
+| roll_no | name      | address  | class | attendence | 
++---------+-----------+----------+-------+------------+ 
+|       1 | Mack      | New York | T.E.  |         50 | 
+|       2 | Jack      | USA      | T.E.  |         40 | 
+|       3 | Arina     | Egypt    | T.E.  |         80 | 
+|       4 | Maxxy     | Thailand | T.E.  |         60 | 
+|       5 | Wednesday | Europe   | T.E.  |         90 | 
++---------+-----------+----------+-------+------------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> Create Table NewStudInfo As Select * From StudInfo, 
+    -> Create Table NewStudInfo As Select * From StudInfo; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near 'Create Table NewStudInfo As Select * 
+From StudInfo' at line 2 
+mysql> Create table NewStudInfo as select * From StudInfo; 
+Query OK, 5 rows affected (1.48 sec) 
+Records: 5  Duplicates: 0  Warnings: 0 
+ 
+mysql> Create Table StudInfo2 As Select roll_no,name From StudInfo; 
+Query OK, 5 rows affected (1.15 sec) 
+Records: 5  Duplicates: 0  Warnings: 0 
+ 
+mysql> SELECT * FROM StudInfo2; 
++---------+-----------+ 
+| roll_no | name      | 
++---------+-----------+ 
+|       1 | Mack      | 
+|       2 | Jack      | 
+|       3 | Arina     | 
+|       4 | Maxxy     | 
+|       5 | Wednesday | 
++---------+-----------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> alter table StudInfo add grade varchar(2); 
+Query OK, 0 rows affected (0.48 sec) 
+Records: 0  Duplicates: 0  Warnings: 0 
+ 
+mysql> Select * from StudInfo; 
++---------+-----------+----------+-------+------------+-------+ 
+| roll_no | name      | address  | class | attendence | grade | 
++---------+-----------+----------+-------+------------+-------+ 
+|       1 | Mack      | New York | T.E.  |         50 | NULL  | 
+|       2 | Jack      | USA      | T.E.  |         40 | NULL  | 
+|       3 | Arina     | Egypt    | T.E.  |         80 | NULL  | 
+|       4 | Maxxy     | Thailand | T.E.  |         60 | NULL  | 
+|       5 | Wednesday | Europe   | T.E.  |         90 | NULL  | 
++---------+-----------+----------+-------+------------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> update StudInfo set grade='A+' where roll_no=5; 
+Query OK, 1 row affected (0.07 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update StudInfo set grade='O' where roll_no=2; 
+Query OK, 1 row affected (0.09 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update StudInfo set grade='A' where roll_no=4; 
+Query OK, 1 row affected (0.18 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update StudInfo set grade='A+' where roll_no=3; 
+Query OK, 1 row affected (0.08 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> update StudInfo set grade='A' where roll_no=1; 
+Query OK, 1 row affected (0.08 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> Select * From StudInfo; 
++---------+-----------+----------+-------+------------+-------+ 
+| roll_no | name      | address  | class | attendence | grade | 
++---------+-----------+----------+-------+------------+-------+ 
+|       1 | Mack      | New York | T.E.  |         50 | A     | 
+|       2 | Jack      | USA      | T.E.  |         40 | O     | 
+|       3 | Arina     | Egypt    | T.E.  |         80 | A+    | 
+|       4 | Maxxy     | Thailand | T.E.  |         60 | A     | 
+|       5 | Wednesday | Europe   | T.E.  |         90 | A+    | 
++---------+-----------+----------+-------+------------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> alter table StudInfo drop column class; 
+Query OK, 0 rows affected (0.38 sec) 
+Records: 0  Duplicates: 0  Warnings: 0 
+ 
+mysql> Select * From StudInfo; 
++---------+-----------+----------+------------+-------+ 
+| roll_no | name      | address  | attendence | grade | 
++---------+-----------+----------+------------+-------+ 
+|       1 | Mack      | New York |         50 | A     | 
+|       2 | Jack      | USA      |         40 | O     | 
+|       3 | Arina     | Egypt    |         80 | A+    | 
+|       4 | Maxxy     | Thailand |         60 | A     | 
+|       5 | Wednesday | Europe   |         90 | A+    | 
++---------+-----------+----------+------------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> create view data as select * from StudInfo; 
+Query OK, 0 rows affected (0.15 sec) 
+ 
+mysql> Select * From StudInfo; 
++---------+-----------+----------+------------+-------+ 
+| roll_no | name      | address  | attendence | grade | 
++---------+-----------+----------+------------+-------+ 
+|       1 | Mack      | New York |         50 | A     | 
+|       2 | Jack      | USA      |         40 | O     | 
+|       3 | Arina     | Egypt    |         80 | A+    | 
+|       4 | Maxxy     | Thailand |         60 | A     | 
+|       5 | Wednesday | Europe   |         90 | A+    | 
++---------+-----------+----------+------------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> Select * From data; 
++---------+-----------+----------+------------+-------+ 
+| roll_no | name      | address  | attendence | grade | 
++---------+-----------+----------+------------+-------+ 
+|       1 | Mack      | New York |         50 | A     | 
+|       2 | Jack      | USA      |         40 | O     | 
+|       3 | Arina     | Egypt    |         80 | A+    | 
+|       4 | Maxxy     | Thailand |         60 | A     | 
+|       5 | Wednesday | Europe   |         90 | A+    | 
++---------+-----------+----------+------------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> create table data1 as select roll_no,name,grade from StudInfo; 
+Query OK, 5 rows affected (1.13 sec) 
+Records: 5  Duplicates: 0  Warnings: 0 
+ 
+mysql> Select * From data2; 
+ERROR 1146 (42S02): Table 'student1.data2' doesn't exist 
+mysql> Select*From data1; 
++---------+-----------+-------+ 
+| roll_no | name      | grade | 
++---------+-----------+-------+ 
+|       1 | Mack      | A     | 
+|       2 | Jack      | O     | 
+|       3 | Arina     | A+    | 
+|       4 | Maxxy     | A     | 
+|       5 | Wednesday | A+    | 
++---------+-----------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> Update data1 set name='Erik' where roll_no=2; 
+Query OK, 1 row affected (0.18 sec) 
+Rows matched: 1  Changed: 1  Warnings: 0 
+ 
+mysql> Select * form data1; 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near 'form data1' at line 1 
+mysql> Select * From data1; 
++---------+-----------+-------+ 
+| roll_no | name      | grade | 
++---------+-----------+-------+ 
+|       1 | Mack      | A     | 
+|       2 | Erik      | O     | 
+|       3 | Arina     | A+    | 
+|       4 | Maxxy     | A     | 
+|       5 | Wednesday | A+    | 
++---------+-----------+-------+ 
+5 rows in set (0.00 sec) 
+ 
+mysql> drop view data; 
+Query OK, 0 rows affected (0.12 sec) 
+ 
+mysql> show index from StudInfo; 
+Empty set (0.01 sec) 
+ 
+mysql> create table  StudentInfo1 (roll_no auto_increment,Primary Key(roll_no),name 
+Varchar(10)); 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to 
+your MySQL server version for the right syntax to use near 'auto_increment,Primary 
+Key(roll_no),name Varchar(10))' at line 1 
+mysql> create table StudentInfo1(roll_no INT auto_increment,primary key(roll_no),name 
+Varchar(10)); 
+Query OK, 0 rows affected (0.65 sec) 
+ 
+mysql> alter table StudentInfo1 auto_increment=1; 
+Query OK, 0 rows affected (0.38 sec) 
+Records: 0  Duplicates: 0  Warnings: 0 
+ 
+mysql> insert into StudentInfo1(name) values('ABC'); 
+Query OK, 1 row affected (0.10 sec) 
+ 
+mysql> insert into StudentInfo1(name) values('PQR'); 
+Query OK, 1 row affected (0.11 sec) 
+ 
+mysql> insert into StudentInfo1(name) values('XYZ'); 
+Query OK, 1 row affected (0.07 sec) 
+ 
+mysql> insert into StudentInfo1(name) values('MNO'); 
+Query OK, 1 row affected (0.10 sec) 
+ 
+mysql> sELECT*fROM StudentInfo1; 
++---------+------+ 
+| roll_no | name | 
++---------+------+ 
+|       1 | ABC  | 
+|       2 | PQR  | 
+|       3 | XYZ  | 
+|       4 | MNO  | 
++---------+------+ 
+4 rows in set (0.00 sec) 
+ 
+mysql> ^C^C^C           
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

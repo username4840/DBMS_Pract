@@ -111,3 +111,150 @@ SQL> select * from library2;
          4 Tina       02-SEP-25 MP         noteturn 
  
 SQL> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Sep 23 08:51:54 2025 
+ 
+Copyright (c) 1982, 2014, Oracle.  All rights reserved. 
+ 
+SQL> connect system 
+Enter password: 
+Connected. 
+SQL> create table library2(roll_no number(5),name varchar2(10),date_of_issue date,book_name 
+varchar2(10),status varchar2(10)); 
+ 
+Table created. 
+ 
+SQL> insert into library2 values(1,'Riya','23-sep-2025','JAVA','returned'); 
+ 
+1 row created. 
+ 
+SQL> insert into library2 values(2,'maya','22-sep-2025','c++','return'); 
+ 
+1 row created. 
+ 
+SQL> insert into library2 values(3,'Siya','22-sep-2025','ADS','noteturn'); 
+ 
+1 row created. 
+ 
+SQL> insert into library2 values(4,'Tina','02-sep-2025','MP','noteturn'); 
+ 
+1 row created. 
+ 
+SQL> select*from library2; 
+ 
+   ROLL_NO NAME       DATE_OF_I BOOK_NAME  STATUS ---------- ---------- --------- ---------- ---------- 
+         1 Riya       23-SEP-25 JAVA       returned 
+         2 maya       22-SEP-25 c++        return 
+         3 Siya       22-SEP-25 ADS        noteturn 
+         4 Tina       02-SEP-25 MP         noteturn 
+ 
+ 
+SQL> create table fine3(roll_no number(10),date_of_return date,amount number(10)); 
+ 
+Table created. 
+ 
+SQL> insert into fine3 values (3,'10-oct-2025',50); 
+ 
+1 row created. 
+ 
+SQL> insert into fine3 values (2,'12-oct-2025',70); 
+ 
+1 row created. 
+ 
+SQL> insert into fine3 values (1,'10-oct-2025',50); 
+ 
+1 row created. 
+ 
+SQL> select*from fine3; 
+ 
+   ROLL_NO DATE_OF_R     AMOUNT ---------- --------- ---------- 
+         3 10-OCT-25         50 
+         2 12-OCT-25         70 
+         1 10-OCT-25         50 
+ 
+SQL> declare rno number(2):=&roll_no; 
+  2  bname varchar2(10): ='&book_name'; 
+  3  no_day number(10); 
+  4  issue_date date; 
+  5  fine3amt number(5): = 0; 
+  6  begin 
+  7  select date_of_issue into issue_date from library2 where roll_no = rno; 
+  8  select sysdate-to_date(issue_date)days into no_day from dual; 
+  9  if(no_day>=15 and no_day<=30)then 
+ 10  fine3amt:=no_day*5; 
+ 11  elsif no_day>30 then 
+ 12  fine3amt:=no_day*50; 
+ 13  end if; 
+ 14  update library set status='return' where roll_no=rno; 
+ 15  if fine3amt>0 then 
+ 16  insert into fine3 values(rno,sysdate,fine3amt); 
+ 17  end if; 
+ 18  EXCEPTION 
+ 19  WHEN no_data_found THEN 
+ 20  dbms_output_put_line('record not found'); 
+ 21  end; 
+ 22  / 
+Enter value for roll_no: 3 
+old   1: declare rno number(2):=&roll_no; 
+new   1: declare rno number(2):=3; 
+Enter value for book_name: JAVA 
+old   2: bname varchar2(10): ='&book_name'; 
+new   2: bname varchar2(10): ='JAVA'; 
+bname varchar2(10): ='JAVA'; 
+                  * 
+ERROR at line 2: 
+ORA-06550: line 2, column 19: 
+PLS-00103: Encountered the symbol ":" when expecting one of the following: 
+:= ; not null default character 
+ 
+SQL> select * from fine3; 
+ 
+   ROLL_NO DATE_OF_R     AMOUNT ---------- --------- ---------- 
+         3 10-OCT-25         50 
+         2 12-OCT-25         70 
+         1 10-OCT-25         50 
+ 
+SQL> select * from library2; 
+ 
+   ROLL_NO NAME       DATE_OF_I BOOK_NAME  STATUS ---------- ---------- --------- ---------- ---------- 
+         1 Riya       23-SEP-25 JAVA       returned 
+         2 maya       22-SEP-25 c++        return 
+         3 Siya       22-SEP-25 ADS        noteturn 
+         4 Tina       02-SEP-25 MP         noteturn 
+ 
+SQL>

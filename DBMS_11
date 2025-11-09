@@ -1,25 +1,81 @@
-# mapreduce_example.py    *** 11th  practicl ***.
-
-from functools import reduce
-
-# Step 1: Input data
-text = "big data requires map reduce map reduce is powerful"
-
-# Step 2: Map Phase - split and assign count 1 to each word
-mapped = [(word, 1) for word in text.split()]
-print("🗺️ Mapped Data:")
-print(mapped)
-
-# Step 3: Shuffle Phase - group by words
-shuffle = {}
-for word, count in mapped:
-    shuffle.setdefault(word, []).append(count)
-
-print("\n🔄 Shuffled Data:")
-print(shuffle)
-
-# Step 4: Reduce Phase - sum up counts for each word
-reduced = {word: reduce(lambda a, b: a + b, counts) for word, counts in shuffle.items()}
-
-print("\n🧮 Reduced Data (Final Word Count):")
-print(reduced)
+Aim :Implement Map Reduce Operation with suitable example using MongoDB (base)  
+sspm@sspm:~$ sudo su 
+[sudo] password for sspm: 
+root@sspm:/home/sspm# mongo 
+> use te 
+switched to db te 
+> db.createCollection("college") 
+{ "ok" : 1 } 
+> db.college.insert({id:1,name:'Priya',amount:5500,status:'A'}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.college.insert({id:1,name:'Priya',amount:4500,status:'A'}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.college.insert({id:2,name:'Shree',amount:60000,status:'A'}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.college.insert({id:3,name:'Swara',amount:23000,status:'A'}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.college.insert({id:4,name:'Ayush',amount:68000,status:'A'}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.college.insert({id:5,name:'Riya',amount:70000,status:'A'}) 
+WriteResult({ "nInserted" : 1 }) 
+> db.college.find().pretty() 
+{ 
+"_id" : ObjectId("670cd3f0dc0a5eb62cfab091"), 
+"id" : 1, 
+"name" : "Priya", 
+"amount" : 5500, 
+"status" : "A" 
+} 
+{"_id" : ObjectId("670cd3fddc0a5eb62cfab092"), 
+"id" : 1, 
+"name" : "Priya", 
+"amount" : 4500, 
+"status" : "A" 
+} 
+{ 
+"_id" : ObjectId("670cd41cdc0a5eb62cfab093"), 
+"id" : 2, 
+"name" : "Shree", 
+"amount" : 60000, 
+"status" : "A" 
+} 
+{ 
+"_id" : ObjectId("670cd447dc0a5eb62cfab094"), 
+"id" : 3, 
+"name" : "Swara", 
+"amount" : 23000, 
+"status" : "A" 
+} 
+{ 
+"_id" : ObjectId("670cd49adc0a5eb62cfab095"),
+"id" : 4, 
+"name" : "Ayush", 
+"amount" : 68000, 
+"status" : "A" 
+} 
+{ 
+"_id" : ObjectId("670cd4dcdc0a5eb62cfab096"), 
+"id" : 5, 
+"name" : "Riya", 
+"amount" : 70000, 
+"status" : "A"} 
+mapReduce query 
+> db.college.mapReduce(function(){emit(this.id,this.amount);},function(key,values){return 
+Array.sum(values)},{query:{status:"A"},out:"final"}) 
+{ 
+"result" : "final", 
+"timeMillis" : 509, 
+"counts" : { 
+"input" : 6, 
+"emit" : 6, 
+"reduce" : 1, 
+"output" : 5 
+}, 
+"ok" : 1 
+} 
+> db.final.find().pretty() 
+{ "_id" : 1, "value" : 10000 } 
+{ "_id" : 2, "value" : 60000 } 
+{ "_id" : 3, "value" : 23000 } 
+{ "_id" : 4, "value" : 68000 } 
+{ "_id" : 5, "value" : 70000 }
